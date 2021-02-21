@@ -1,10 +1,16 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const { MONGODB } = require('./config');
+const userRoutes = require('./routes/user');
 
-app.get('/', (req, res, next) => res.end('welcome!!!!'));
+app.use(bodyParser.json());
+app.use('/api/users', userRoutes);
+
+// for testing purposes:
+// app.get('/', (req, res, next) => res.end('welcome!!!!'));
 
 mongoose
   .connect(MONGODB, { useNewUrlParser: true })
