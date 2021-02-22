@@ -2,12 +2,17 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const { MONGODB } = require('./config');
 const userRoutes = require('./routes/user');
 const noteRoutes = require('./routes/note');
 const auth = require('./middleware/auth');
 
+// Enable CORS
+app.use(cors());
+
+// Body parser to parse request body as JSON
 app.use(bodyParser.json());
 
 // NOTE: the order in which routes appear/are listed in a node.js app
