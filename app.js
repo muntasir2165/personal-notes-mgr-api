@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 const { MONGODB } = require('./config');
 const userRoutes = require('./routes/user');
+const noteRoutes = require('./routes/note');
 const auth = require('./middleware/auth');
 
 app.use(bodyParser.json());
@@ -14,10 +15,17 @@ app.use(bodyParser.json());
 
 // for testing protected routes
 // GET, POST, PUT, DELETE etc. - any kind of HTTP request is ok here
-app.use('/api/protected', auth, (req, res) => {
-  res.end(`Hi ${req.user.firstName}, you are authenticated!`);
-});
+// app.use('/api/protected', auth, (req, res) => {
+//   res.end(`Hi ${req.user.firstName}, you are authenticated!`);
+// });
 
+// requests coming to /api/notes will hit the auth
+// middleware first and then the corresponding route
+// handler in noteRoutes router
+// this implies that all endpoints starting with
+// /api/notes are protected and hence, only logged
+// in users can access and manipulate notes data
+app.use('/api/notes', auth, noteRoutes);
 app.use('/api/users', userRoutes);
 
 // the following handles undefined routes in our app
